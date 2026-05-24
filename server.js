@@ -16,6 +16,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Routes
+app.get('/', (req, res) => {
+    res.send('API is running...');
+});
+
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/products', require('./routes/productRoutes'));
 app.use('/api/services', require('./routes/serviceRoutes'));
