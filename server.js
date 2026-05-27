@@ -13,15 +13,19 @@ const admin = require('firebase-admin');
 
 // Vercel Environment Variable থেকে JSON পার্স করে নেওয়া
 let serviceAccount;
-try {
-  if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+  try {
     serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-  } else {
+  } catch (error) {
+    console.error("Firebase Service Account JSON parse error. Please check Vercel Env Variable format.", error.message);
+  }
+} else {
+  try {
     // লোকালহোস্টের জন্য
     serviceAccount = require('./firebaseServiceAccount.json');
+  } catch (error) {
+    console.warn("Firebase file not found and FIREBASE_SERVICE_ACCOUNT env is not set.");
   }
-} catch (error) {
-  console.error("Firebase Auth JSON parsing error", error);
 }
 
 if (serviceAccount) {
