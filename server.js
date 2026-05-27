@@ -36,7 +36,7 @@ const app = express();
 app.use(cors({
     origin: [
         'http://localhost:5173', // আপনার লোকাল ফ্রন্টএন্ড লিঙ্ক 
-        'https://your-frontend-domain.vercel.app' // এখানে আপনার ফ্রন্টএন্ডের আসল লাইভ লিঙ্কটি দিন
+        'https://cranepartsandtarpaulin.netlify.app/' // এখানে আপনার ফ্রন্টএন্ডের আসল লাইভ লিঙ্কটি দিন
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
