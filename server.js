@@ -10,10 +10,25 @@ connectDB();
 
 
 const admin = require('firebase-admin');
-const serviceAccount = require('./firebaseServiceAccount.json');
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
+
+// Vercel Environment Variable থেকে JSON পার্স করে নেওয়া
+let serviceAccount;
+try {
+  if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+  } else {
+    // লোকালহোস্টের জন্য
+    serviceAccount = require('./firebaseServiceAccount.json');
+  }
+} catch (error) {
+  console.error("Firebase Auth JSON parsing error", error);
+}
+
+if (serviceAccount) {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+  });
+}
 
 const app = express();
 
