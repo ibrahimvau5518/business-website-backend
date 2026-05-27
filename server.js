@@ -35,8 +35,8 @@ const app = express();
 // Middleware
 app.use(cors({
     origin: [
-        'http://localhost:5173', // আপনার লোকাল ফ্রন্টএন্ড লিঙ্ক 
-        'https://cranepartsandtarpaulin.netlify.app/' // এখানে আপনার ফ্রন্টএন্ডের আসল লাইভ লিঙ্কটি দিন
+        'http://localhost:5173', 
+        'https://cranepartsandtarpaulin.netlify.app' 
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
