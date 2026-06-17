@@ -82,6 +82,7 @@ const createOrder = async (req, res) => {
         }
 
         const orderData = {
+            userId: req.user._id,
             name: name.trim(),
             phone: phone.trim(),
             address: address.trim(),
@@ -106,6 +107,15 @@ const createOrder = async (req, res) => {
         if (error.name === 'ValidationError') {
             return res.status(400).json({ message: error.message });
         }
+        res.status(500).json({ message: error.message });
+    }
+};
+
+const getUserOrders = async (req, res) => {
+    try {
+        const orders = await Order.find({ userId: req.user._id }).sort({ createdAt: -1 });
+        res.json(orders);
+    } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
@@ -165,4 +175,4 @@ const updateOrderStatus = async (req, res) => {
     }
 };
 
-module.exports = { createOrder, getAllOrders, updateOrderStatus };
+module.exports = { createOrder, getUserOrders, getAllOrders, updateOrderStatus };

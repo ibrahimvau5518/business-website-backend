@@ -37,7 +37,7 @@ const protect = async (req, res, next) => {
   const token = getBearerToken(req);
 
   if (!token) {
-    return res.status(401).json({ message: 'Not authorized, no token' });
+    return res.status(401).json({ message: 'Unauthorized' });
   }
 
   try {
@@ -45,17 +45,17 @@ const protect = async (req, res, next) => {
     const user = await loadUserFromToken(decoded);
 
     if (!user) {
-      return res.status(401).json({ message: 'Not authorized, user not found' });
+      return res.status(401).json({ message: 'Unauthorized' });
     }
 
     req.user = user;
     next();
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
-      return res.status(401).json({ message: 'Session expired, please login again' });
+      return res.status(401).json({ message: 'Unauthorized' });
     }
 
-    return res.status(401).json({ message: 'Not authorized, invalid token' });
+    return res.status(401).json({ message: 'Unauthorized' });
   }
 };
 

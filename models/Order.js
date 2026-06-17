@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const orderSchema = mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        index: true,
+    },
     name: { type: String, required: true },
     phone: { type: String, required: true },
     address: { type: String, required: true },
