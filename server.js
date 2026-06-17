@@ -72,6 +72,11 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Vercel invokes the exported app as a serverless handler — do not bind a port there.
+if (!process.env.VERCEL) {
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+} else {
+    console.log('[DEBUG server] Express app exported for Vercel serverless');
+}
 
 module.exports = app;
