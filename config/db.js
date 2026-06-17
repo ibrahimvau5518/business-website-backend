@@ -1,22 +1,45 @@
 const mongoose = require('mongoose');
 
-let isConnected = false;
+let cached = global.mongoose;
+
+if (!cached) {
+    cached = global.mongoose = { conn: null, promise: null };
+}
+
+const getMongoUri = () => {
+    const uri = process.env.MONGO_URI?.trim().replace(/;+$/, '');
+    if (!uri) {
+        throw new Error('MONGO_URI is not defined');
+    }
+    return uri;
+};
 
 const connectDB = async () => {
-    if (isConnected) {
-        console.log('MongoDB is already connected');
-        return;
+    if (cached.conn) {
+        return cached.conn;
+    }
+
+    if (!cached.promise) {
+        const uri = getMongoUri();
+
+        cached.promise = mongoose.connect(uri, {
+            bufferCommands: false,
+            serverSelectionTimeoutMS: 10000,
+        }).then((mongooseInstance) => {
+            console.log(`MongoDB Connected Successfully: ${mongooseInstance.connection.host}`);
+            return mongooseInstance;
+        });
     }
 
     try {
-        const conn = await mongoose.connect(process.env.MONGO_URI);
-        isConnected = conn.connection.readyState === 1;
-        console.log(`MongoDB Connected Successfully: ${conn.connection.host}`);
+        cached.conn = await cached.promise;
     } catch (err) {
+        cached.promise = null;
         console.error(`MongoDB Connection Error: ${err.message}`);
-        // Remove process.exit(1) for Vercel serverless environment
-        // process.exit(1); 
+        throw err;
     }
+
+    return cached.conn;
 };
 
 module.exports = connectDB;

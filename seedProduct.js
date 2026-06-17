@@ -12,10 +12,10 @@ const seedProduct = async () => {
         const product = await Product.create({
             name: 'Heavy Duty Crane Hook',
             description: 'A highly durable crane hook capable of lifting up to 50 tons. Made from high-grade steel.',
-            category: 'Crane Parts',
             price: 2500,
-            stock: 10,
-            imageUrl: '/uploads/sample-hook.jpg' // Dummy image url
+            category: 'crane-parts',
+            image: '/uploads/sample-hook.jpg',
+            stockStatus: 'in-stock'
         });
 
         console.log('Product added successfully!');

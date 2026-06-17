@@ -1,0 +1,19 @@
+---
+pid: 22812
+cwd: "C:\Projects\business-website-backend"
+command: "Set-Location \"C:\\Projects\\business-website-backend\"; npm run dev"
+started_at: 2026-06-17T04:32:48.950Z
+running_for_ms: 479991   
+---
+
+> business-website-backend@1.0.0 dev
+> nodemon server.js
+
+[nodemon] 3.1.14
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,cjs,json
+[nodemon] starting `node server.js`
+◇ injected env (4) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+Server running on port 5000
+MongoDB Connected Successfully: ac-ayg28wl-shard-00-00.4rgvatj.mongodb.net
