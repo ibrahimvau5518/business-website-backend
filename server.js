@@ -10,8 +10,10 @@ const app = express();
 // Middleware
 app.use(cors({
     origin: [
-        'http://localhost:5173', 
-        'https://cranepartsandtarpaulin.netlify.app' 
+        'http://localhost:5173',
+        'https://cranepartsandtarpaulin.netlify.app',
+        'https://business-website-frontend.vercel.app',
+        /\.vercel\.app$/,
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']
@@ -31,6 +33,7 @@ app.get('/api/health', (req, res) => {
 app.use('/api', ensureDb);
 
 app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/products', require('./routes/productRoutes'));
 app.use('/api/services', require('./routes/serviceRoutes'));
 app.use('/api/contacts', require('./routes/contactRoutes'));

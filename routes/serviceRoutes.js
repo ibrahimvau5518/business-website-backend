@@ -1,5 +1,5 @@
 const express = require('express');
-const { protect } = require('../middleware/authMiddleware');
+const { protectAdmin } = require('../middleware/authMiddleware');
 const Service = require('../models/Service');
 const router = express.Router();
 
@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/', protect, async (req, res) => {
+router.post('/', protectAdmin, async (req, res) => {
     try {
         const service = await Service.create(req.body);
         res.status(201).json(service);

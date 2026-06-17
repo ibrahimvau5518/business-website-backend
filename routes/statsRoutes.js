@@ -1,11 +1,11 @@
 const express = require('express');
-const { protect } = require('../middleware/authMiddleware');
+const { protectAdmin } = require('../middleware/authMiddleware');
 const Product = require('../models/Product');
 const Service = require('../models/Service');
 const Contact = require('../models/Contact');
 const router = express.Router();
 
-router.get('/', protect, async (req, res) => {
+router.get('/', protectAdmin, async (req, res) => {
     try {
         const productCount = await Product.countDocuments();
         const serviceCount = await Service.countDocuments();

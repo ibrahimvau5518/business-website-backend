@@ -1,5 +1,5 @@
 const express = require('express');
-const { protect } = require('../middleware/authMiddleware');
+const { protectAdmin } = require('../middleware/authMiddleware');
 const Contact = require('../models/Contact');
 const router = express.Router();
 
@@ -12,7 +12,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.get('/', protect, async (req, res) => {
+router.get('/', protectAdmin, async (req, res) => {
     try {
         const contacts = await Contact.find({}).sort({ createdAt: -1 });
         res.json(contacts);
