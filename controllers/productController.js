@@ -27,16 +27,10 @@ const resolvePricing = (category, price, pricePerSqFt) => {
 };
 
 const getProducts = async (req, res) => {
-    console.log('[DEBUG getProducts] route entered');
-
     try {
-        console.log('[DEBUG getProducts] before Product.find()');
         const products = await Product.find({}).sort({ createdAt: -1 });
-        console.log(`[DEBUG getProducts] after Product.find() — count: ${products.length}`);
-        console.log('[DEBUG getProducts] before res.json()');
         res.json(products);
     } catch (error) {
-        console.error(`[DEBUG getProducts] error: ${error.message}`);
         res.status(500).json({ message: error.message });
     }
 };

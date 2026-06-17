@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const admin = require('firebase-admin');
+const { getFirebaseAdmin } = require('../config/firebase');
 const Admin = require('../models/Admin');
 
 const protect = async (req, res, next) => {
@@ -7,6 +7,10 @@ const protect = async (req, res, next) => {
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         try {
             token = req.headers.authorization.split(' ')[1];
+            const admin = getFirebaseAdmin();
+            if (!admin) {
+                return res.status(503).json({ message: 'Firebase is not configured' });
+            }
             const decodedToken = await admin.auth().verifyIdToken(token);
             req.user = decodedToken;
             next();

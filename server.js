@@ -5,32 +5,6 @@ const ensureDb = require('./middleware/dbMiddleware');
 
 dotenv.config();
 
-
-const admin = require('firebase-admin');
-
-// Vercel Environment Variable থেকে JSON পার্স করে নেওয়া
-let serviceAccount;
-if (process.env.FIREBASE_SERVICE_ACCOUNT) {
-  try {
-    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-  } catch (error) {
-    console.error("Firebase Service Account JSON parse error. Please check Vercel Env Variable format.", error.message);
-  }
-} else {
-  try {
-    // লোকালহোস্টের জন্য
-    serviceAccount = require('./firebaseServiceAccount.json');
-  } catch (error) {
-    console.warn("Firebase file not found and FIREBASE_SERVICE_ACCOUNT env is not set.");
-  }
-}
-
-if (serviceAccount) {
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
-  });
-}
-
 const app = express();
 
 // Middleware
@@ -48,6 +22,10 @@ app.use(express.urlencoded({ extended: false }));
 // Routes
 app.get('/', (req, res) => {
     res.send('API is running...');
+});
+
+app.get('/api/health', (req, res) => {
+    res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
 app.use('/api', ensureDb);
@@ -72,11 +50,9 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-// Vercel invokes the exported app as a serverless handler — do not bind a port there.
-if (!process.env.VERCEL) {
+// Only bind a port when running directly (`node server.js`), not when imported by Vercel.
+if (require.main === module) {
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-} else {
-    console.log('[DEBUG server] Express app exported for Vercel serverless');
 }
 
 module.exports = app;
